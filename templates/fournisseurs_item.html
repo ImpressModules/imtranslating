@@ -1,0 +1,11 @@
+<{includeq file='db:imtranslating_header.html'}>
+
+<{if $imtranslating_items}>
+	<div><{$imtranslating_items}></div>
+<{/if}>
+
+<{if $imtranslating_item}>
+	<{includeq file='db:smartobject_form.html' form=$imtranslating_item}>
+<{/if}>
+
+<{includeq file='db:imtranslating_footer.html'}>

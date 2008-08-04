@@ -1,0 +1,15 @@
+/**
+* $Id: module.css,v 1.2 2007/09/28 18:20:15 marcan Exp $
+* Module: SmartFAQ
+* Author: marcan <marcan@notrevie.ca>
+* Licence: GNU
+*/
+
+.imtranslating_headertable {padding: 0; margin: 0; border-bottom: 1px solid; margin-bottom: 10px;}
+.imtranslating_modulename {font-size: 0.8em; text-align: left; font-weight: bold; padding-right: 0.3em;	line-height: 18px;}
+.imtranslating_breadcrumb {font-size: 0.8em; line-height: 18px;}
+.imtranslating_adminlinks {padding-top: 15px; padding-bottom: 5px; font-size: 0.8em; text-align: center; line-height: 18px;}
+
+.imtranslating_message {padding-top: 10px;}
+
+td.head{width: 300px;}
