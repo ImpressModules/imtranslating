@@ -55,19 +55,18 @@ $modversion['onUpdate'] = "include/onupdate.inc.php";
 /**
  * SmartObject Hack : defining the items managed by this module
  */
+/*
 $modversion['object_items'][1] = 'log';
-$modversion['object_items'][2] = 'type';
-$modversion['object_items'][3] = 'category';
+*/
 
 $modversion["tables"] = icms_getTablesArray($modversion['dirname'], $modversion['object_items']);
 
 // Search
 $modversion['hasSearch'] = 0;
-$modversion['search']['file'] = "include/search.inc.php";
-$modversion['search']['func'] = "imtranslating_search";
+
 
 // Menu
-$modversion['hasMain'] = 1;
+$modversion['hasMain'] = 0;
 
 /*
 $modversion['sub'][1]['name'] = _MI_IMTRANSLATING_ECARDS;
@@ -77,41 +76,9 @@ $modversion['sub'][2]['name'] = _MI_IMTRANSLATING_ARCHIVE;
 $modversion['sub'][2]['url'] = "message.php";
 */
 
-/*
-$modversion['blocks'][1]['file'] = "new_adds.php";
-$modversion['blocks'][1]['name'] = _MI_IMTRANSLATING_NEW_ADDS;
-$modversion['blocks'][1]['show_func'] = "new_adds_show";
-$modversion['blocks'][1]['edit_func'] = "new_adds_edit";
-$modversion['blocks'][1]['template'] = "imtranslating_new_adds.html";
 
-*/
-global $xoopsModule;
-// Templates
-$i = 0;
 
-$i++;
-$modversion['templates'][$i]['file'] = 'imtranslating_header.html';
-$modversion['templates'][$i]['description'] = 'Header template of all pages';
 
-$i++;
-$modversion['templates'][$i]['file'] = 'imtranslating_footer.html';
-$modversion['templates'][$i]['description'] = 'Footer template of all pages';
-
-$i++;
-$modversion['templates'][$i]['file'] = 'imtranslating_index.html';
-$modversion['templates'][$i]['description'] = 'Display Index page';
-
-$i++;
-$modversion['templates'][$i]['file'] = 'imtranslating_list.html';
-$modversion['templates'][$i]['description'] = 'Display lists page';
-
-$i++;
-$modversion['templates'][$i]['file'] = 'imtranslating_item.html';
-$modversion['templates'][$i]['description'] = 'Display items page';
-
-$i++;
-$modversion['templates'][$i]['file'] = 'imtranslating_log.html';
-$modversion['templates'][$i]['description'] = 'Display logs page';
 
 
 // Config Settings (only for modules that need config settings generated automatically)
