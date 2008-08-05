@@ -7,6 +7,7 @@
 * Licence: GNU
 */
 
-header('location: item.php');
+$translator = new ImtranslatingTranslator('french');
+$translator->translate();
 exit;
 ?>

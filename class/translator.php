@@ -27,14 +27,14 @@ class ImtranslatingTranslator
 	}
 
 	public function compare(){
-		//read the reference file
-		if(!$this->read_from_file()){
+		//read the reference files
+		if(!$this->read_from_files()){
 			$this->setError(_IMTRANSL_READ_ERR);
 			return false;
 		}
 
 		//parse the content and put it in an array of language constants
-		if(!$this->parse_from_file()){
+		if(!$this->parse_from_files()){
 			$this->setError(_IMTRANSL_PARSE_ERR);
 			return false;
 		}
@@ -54,7 +54,7 @@ class ImtranslatingTranslator
 
 	}
 
-	public function write_file(){
+	public function write_files(){
 		//create new set of files
 
 
@@ -65,11 +65,15 @@ class ImtranslatingTranslator
 
 	}
 
-	private function read_from_file(){
+	private function read_from_files(){
+		$file_array = scandir(ICMS_ROOT_PATH.'/language/'.$this->_from_lang.'/');
 
+		if($this->_type == 'core'){
+			$this->_from_lang_array = file(ICMS_ROOT_PATH.'/language/'.$this->_from_lang.'/admin.php');
+		}
 	}
 
-	private function parse_from_file(){
+	private function parse_from_files(){
 
 	}
 
