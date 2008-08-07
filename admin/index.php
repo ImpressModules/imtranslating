@@ -7,7 +7,29 @@
 * Licence: GNU
 */
 include_once("admin_header.php");
-$translator = new ImtranslatingTranslator('french');
-$translator->check_folders();
+xoops_cp_header();
+
+
+if(empty($_POST)){
+	$job = new ImtranslatingJob();
+	$form = $job->getInitialForm();
+	$form->display();
+	exit;
+}else{
+	$job = new ImtranslatingJob($_POST['from_lang'], $_POST['to_lang'], $_POST['module'], $_POST['step']);
+	if($_POST['step'] == 'zip'){
+		$job->makeZip();
+		exit;
+	}else{
+		if($_POST['step'] != 0){
+			$job->write();
+		}
+		$form = $job->getForm();
+		$form->display();
+	}
+}
+
+xoops_cp_footer();
+
 exit;
 ?>

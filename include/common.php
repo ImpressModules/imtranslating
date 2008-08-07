@@ -46,7 +46,9 @@ $imtranslatingConfig = icms_getModuleConfig(IMTRANSLATING_DIRNAME);
 
 include_once ICMS_ROOT_PATH."/kernel/icmspersistableobject.php";
 
-include_once(IMTRANSLATING_ROOT_PATH . 'class/translator.php');
+include_once(IMTRANSLATING_ROOT_PATH . 'class/job.php');
+include_once(IMTRANSLATING_ROOT_PATH . 'class/spectre.zip.php');
+include 'zip.lib.php';
 
 
 global $icmsPersistableRegistry;
