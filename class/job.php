@@ -167,16 +167,11 @@ class ImtranslatingJob
 	function getFileName($step){
 		//get the content of the reference folder and clean it
 		$all_files =  scandir($this->_from_path);
-
-		var_dump($this->_from_path);echo"<br>";
-		var_dump($all_files);echo"<br>";
 		foreach ($all_files as $the_file){
 			if(substr(strrev($the_file), 0, 3) == 'php'){
 				$ref_files[] = $the_file;
 			}
 		}
-		echo $step."<br>";
-		var_dump($ref_files[$step]);echo"<br>";echo"<br>";
 		if(isset($ref_files[$step])){
 			return $ref_files[$step];
 		}else{
