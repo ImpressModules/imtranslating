@@ -74,9 +74,13 @@ class ImtranslatingJob
 
 	private function  getModuleArray(){
 		$module_handler =& xoops_gethandler('module');
-        $ret = $module_handler->getList(null, true);
+        $list = $module_handler->getList(null, true);
         $ret['core'] = _AM_IMTRANSL_COREFILES;
-        $ret['install'] = _AM_IMTRANSL_INSTALLFILES;
+        foreach($list as $key => $mod){
+        	if($mod != 'System'){
+        		$ret[$key] = $mod ;
+        	}
+        }
 
         return $ret;
 	}
@@ -154,8 +158,8 @@ class ImtranslatingJob
 			}
 
 		}else{
-			$this->_to_path = ICMS_ROOT_PATH.'/modules/'.$this->_module.'/language/'.$this->_from_lang.'/';
-			$this->_from_path = ICMS_ROOT_PATH.'/modules/'.$this->_module.'/language/'.$this->_to_lang.'/';exit;
+			$this->_to_path = ICMS_ROOT_PATH.'/modules/'.$this->_module.'/language/'.$this->_to_lang.'/';
+			$this->_from_path = ICMS_ROOT_PATH.'/modules/'.$this->_module.'/language/'.$this->_from_lang.'/';
 		}
 
 	}
@@ -163,11 +167,16 @@ class ImtranslatingJob
 	function getFileName($step){
 		//get the content of the reference folder and clean it
 		$all_files =  scandir($this->_from_path);
+
+		var_dump($this->_from_path);echo"<br>";
+		var_dump($all_files);echo"<br>";
 		foreach ($all_files as $the_file){
 			if(substr(strrev($the_file), 0, 3) == 'php'){
 				$ref_files[] = $the_file;
 			}
 		}
+		echo $step."<br>";
+		var_dump($ref_files[$step]);echo"<br>";echo"<br>";
 		if(isset($ref_files[$step])){
 			return $ref_files[$step];
 		}else{
@@ -354,6 +363,18 @@ class ImtranslatingJob
 					break;
 				}
 			}else{
+				if(!is_dir(_IMTRANSLATING_UPLOAD_PATH."/modules/")){
+					mkdir(_IMTRANSLATING_UPLOAD_PATH."/modules/");
+				}
+				if(!is_dir(_IMTRANSLATING_UPLOAD_PATH."/modules/".$this->_module)){
+					mkdir(_IMTRANSLATING_UPLOAD_PATH."/modules/".$this->_module);
+				}
+				if(!is_dir(_IMTRANSLATING_UPLOAD_PATH."/modules/".$this->_module."/language/")){
+					mkdir(_IMTRANSLATING_UPLOAD_PATH."/modules/".$this->_module."/language/");
+				}
+				if(!is_dir(_IMTRANSLATING_UPLOAD_PATH."/modules/".$this->_module."/language/".$this->_to_lang)){
+					mkdir(_IMTRANSLATING_UPLOAD_PATH."/modules/".$this->_module."/language/".$this->_to_lang);
+				}
 
 			}
 		}
@@ -394,8 +415,8 @@ class ImtranslatingJob
 		/*foreach(scandir(_IMTRANSLATING_UPLOAD_PATH.$this->_to_lang."/") as $file){
 			$zipper->addFile(_IMTRANSLATING_UPLOAD_PATH.$this->_to_lang."/".$file);
 		}*/
-		$zipper->addDir(_IMTRANSLATING_UPLOAD_PATH.$this->_to_lang."/");
-		$zipper->render($this->_to_lang.'.zip');
+		$zipper->addDir(_IMTRANSLATING_UPLOAD_PATH."/");
+		$zipper->render('imtranslating.zip');
 	}
 
 }
