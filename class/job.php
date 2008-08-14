@@ -5,7 +5,7 @@ if (!defined("XOOPS_ROOT_PATH")) {
 die("XOOPS root path not defined");
 }
 
-define("_IMTRANSLATING_UPLOAD_PATH", ICMS_ROOT_PATH."/uploads/imtranslating/");
+define("_IMTRANSLATING_UPLOAD_PATH", ICMS_ROOT_PATH."/uploads/imtranslating");
 
 class ImtranslatingJob
 {
@@ -14,10 +14,12 @@ class ImtranslatingJob
 	var $_to_lang;
 	var $_step;
 	var $_module;
-	var $_path;
+	var $_from_path;
+	var $_to_path;
 	var $_current_file;
 	var $_ref_lang_array;
-	var $_missing_const;
+	var $_missing_const = array();
+	var $_fileset;
 
 
 	/*var $_from_lang_array = array();
@@ -27,12 +29,13 @@ class ImtranslatingJob
 	/**
 	* constructor
 	*/
-	function ImtranslatingJob($from_lang = '', $to_lang = '', $module = 'core', $step = 0)
+	function ImtranslatingJob($from_lang = '', $to_lang = '', $module = 'core', $step = 0, $fileset = 'default')
 	{
 		$this->_from_lang = $from_lang;
 		$this->_to_lang = $to_lang;
 		$this->_module = $module;
 		$this->_step = $step;
+		$this->_fileset = $fileset;
 		$this->setPath();
 
 	}
@@ -52,7 +55,8 @@ class ImtranslatingJob
 		$module_select->addOptionArray($this->getModuleArray());
 		$form->addElement($module_select);
 
-		$form->addElement(new XoopsFormHidden('step', $this->_step));
+		$form->addElement(new XoopsFormHidden('step', 0));
+		$form->addElement(new XoopsFormHidden('fileset', 'default'));
 
 		$button_tray = new XoopsFormElementTray('', '');
 
@@ -91,15 +95,37 @@ class ImtranslatingJob
 	function getForm(){
 		//get the name of the file to translate
 		$this->_current_file = $this->getFileName($this->_step);
-		//var_dump($this->_current_file);echo"<br>";
 		if(!$this->_current_file){
-			return $this->getFinishForm();
+			if($this->_module == 'core'){
+				if($this->_fileset == 'default'){
+					$this->_fileset = 'install';
+					$this->_step = 0;
+					$this->setPath();
+					return $this->getForm();
+				}elseif($this->_fileset == 'install'){
+					$this->_fileset = 'system';
+					$this->_step = 0;
+					$this->setPath();
+					return $this->getForm();
+				}elseif($this->_fileset == 'system'){
+					$this->_fileset = 'system/admin';
+					$this->_step = 0;
+					$this->setPath();
+					return $this->getForm();
+				}else{
+				return $this->getFinishForm();
+			}
+			}else{
+				return $this->getFinishForm();
+			}
 		}
 
-		//get the parsed language constants
-		$this->_ref_lang_array = $this->parse_lang_files($this->_from_lang);
 
-		$this->_missing_const = $this->find_missing_const();
+		//get the parsed language constants
+		$this->_ref_lang_array = $this->parse_from_lang_files();
+		if(!empty($this->_ref_lang_array)){
+			$this->_missing_const = $this->find_missing_const();
+		}
 		if(empty($this->_missing_const)){
 			$this->_step ++;
 			return $this->getForm();
@@ -111,18 +137,32 @@ class ImtranslatingJob
 	function setPath(){
 		//determines the path of the both laguage file set
 		if($this->_module == 'core'){
-			$this->_path = ICMS_ROOT_PATH.'/language/';
-		}elseif($this->_module == 'install'){
-			$this->_path = ICMS_ROOT_PATH.'install/language/';
+			if($this->_fileset == 'default'){
+				$this->_from_path = ICMS_ROOT_PATH.'/language/'.$this->_from_lang.'/';
+				$this->_to_path = ICMS_ROOT_PATH.'/language/'.$this->_to_lang.'/';
+			}elseif($this->_fileset == 'install'){
+				$this->_from_path = ICMS_ROOT_PATH.'/install/language/'.$this->_from_lang.'/';
+				$this->_to_path = ICMS_ROOT_PATH.'/install/language/'.$this->_to_lang.'/';
+
+			}elseif($this->_fileset == 'system'){
+				$this->_from_path = ICMS_ROOT_PATH.'/modules/system/language/'.$this->_from_lang.'/';
+				$this->_to_path = ICMS_ROOT_PATH.'/modules/system/language/'.$this->_to_lang.'/';
+
+			}else{
+				$this->_from_path = ICMS_ROOT_PATH.'/modules/system/language/'.$this->_from_lang.'/admin/';
+				$this->_to_path = ICMS_ROOT_PATH.'/modules/system/language/'.$this->_to_lang.'/admin/';
+			}
+
 		}else{
-			$this->_path = ICMS_ROOT_PATH.'/modules/'.$this->_module.'/language/';
+			$this->_to_path = ICMS_ROOT_PATH.'/modules/'.$this->_module.'/language/'.$this->_from_lang.'/';
+			$this->_from_path = ICMS_ROOT_PATH.'/modules/'.$this->_module.'/language/'.$this->_to_lang.'/';exit;
 		}
 
 	}
 
 	function getFileName($step){
 		//get the content of the reference folder and clean it
-		$all_files =  scandir($this->_path.$this->_from_lang.'/');
+		$all_files =  scandir($this->_from_path);
 		foreach ($all_files as $the_file){
 			if(substr(strrev($the_file), 0, 3) == 'php'){
 				$ref_files[] = $the_file;
@@ -147,7 +187,8 @@ class ImtranslatingJob
 		$form->addElement(new XoopsFormHidden('to_lang', $this->_to_lang));
 		$form->addElement(new XoopsFormHidden('module', $this->_module));
 		$form->addElement(new XoopsFormHidden('step', $this->_step+1));
-
+		$form->addElement(new XoopsFormHidden('fileset', $this->_fileset));
+		$form->addElement(new XoopsFormHidden('write', 1));
 		$button_tray = new XoopsFormElementTray('', '');
 
 		$butt_create = new XoopsFormButton('', '', _AM_IMTRANSL_GO, 'submit');
@@ -184,9 +225,10 @@ class ImtranslatingJob
 	}
 
 
-	private function parse_lang_files($lang){
+	private function parse_from_lang_files(){
 		$myts =& MyTextSanitizer::getInstance();
-		$raw_langfile = file($this->_path.$lang.'/'.$this->_current_file);
+		$raw_langfile = file($this->_from_path.$this->_current_file);
+		$langfile_array = array();
 		foreach($raw_langfile as $key =>$line){
 			//erease spaces at the begining
 			while(substr($line, 0, 1) == ' '){
@@ -214,39 +256,7 @@ class ImtranslatingJob
 				while(substr($line, 0, 1) == ' ' || substr($line, 0, 1) == ','){
 					$line = substr($line, 1);
 				}
-				/*//vars for parsing loop
-				$temp_line = $line;
-				$ok = false;
-				$cut = 0;
 
-				//parse a "" quoted const value
-				if(substr($temp_line, 0, 1) == '"'){
-					while(!$ok){
-						$end = stripos( substr($temp_line, 1), '"');
-						if(substr($temp_line, $end, 2) != '\"'){
-							$ok = true;
-						}else{
-							$cut += $end+1;
-							$temp_line = substr($temp_line, $end+1);
-						}
-					}
-					$const_val = substr($line, 1, $end+$cut);
-				}
-
-				//parse a '' quoted const value
-				if(substr($temp_line, 0, 1) == "'"){
-					while(!$ok){
-						$end = stripos( substr($temp_line, 1), "'");
-						if(substr($temp_line, $end, 2) != "\'"){
-							$ok = true;
-						}else{
-							$cut += $end+1;
-							$temp_line = substr($temp_line, $end+1);
-						}
-					}
-					$const_val = substr($line, 1, $end+$cut);
-				}
-				*/
 				$line = substr($line, 1);
 				$line = substr(strrev($line), 1);
 				$line = substr($line, 1);
@@ -261,13 +271,17 @@ class ImtranslatingJob
 	}
 
 	private function find_missing_const(){
-		$already_defined = $this->get_const_names($this->_to_lang);
-		return array_diff(array_keys($this->_ref_lang_array), $already_defined);
+		$already_defined = $this->get_defined_const_names();
+		if(is_array($already_defined)){
+			return array_diff(array_keys($this->_ref_lang_array), $already_defined);
+		}else{
+			return array_keys($this->_ref_lang_array);
+		}
 
 	}
 
-	private function get_const_names($lang){
-		$raw_langfile = file($this->_path.$lang.'/'.$this->_current_file);
+	private function get_defined_const_names(){
+		$raw_langfile = file($this->_to_path.$this->_current_file);
 		foreach($raw_langfile as $key =>$line){
 			//erease spaces at the begining
 			while(substr($line, 0, 1) == ' '){
@@ -304,17 +318,55 @@ class ImtranslatingJob
 	}
 
 	function write(){
-		$old_version_path = $this->_path.$this->_to_lang."/";
-		$new_version_path = _IMTRANSLATING_UPLOAD_PATH.$this->_to_lang."/";
+		$myts =& MyTextSanitizer::getInstance();
+		$old_version_path = $this->_to_path."/";
+		$new_version_path = _IMTRANSLATING_UPLOAD_PATH.str_replace(ICMS_ROOT_PATH, '', $this->_to_path);
 		$filename = $this->getFileName($_POST['step']-1);
 		if(!is_dir($new_version_path)){
-			//TODO :create dest path
+			if(!is_dir(_IMTRANSLATING_UPLOAD_PATH)){
+				mkdir(_IMTRANSLATING_UPLOAD_PATH);
+			}
+			if($this->_module == 'core'){
+					switch($this->_fileset){
+					case 'default';
+						mkdir(_IMTRANSLATING_UPLOAD_PATH."/language/");
+						mkdir(_IMTRANSLATING_UPLOAD_PATH."/language/".$this->_to_lang);
+					break;
+					case 'install';
+						mkdir(_IMTRANSLATING_UPLOAD_PATH."/install/");
+						mkdir(_IMTRANSLATING_UPLOAD_PATH."/install/language/");
+						mkdir(_IMTRANSLATING_UPLOAD_PATH."/install/language/".$this->_to_lang);
+					break;
+					case 'system';
+						mkdir(_IMTRANSLATING_UPLOAD_PATH."/modules/");
+						mkdir(_IMTRANSLATING_UPLOAD_PATH."/modules/system/");
+						mkdir(_IMTRANSLATING_UPLOAD_PATH."/modules/system/language/");
+						mkdir(_IMTRANSLATING_UPLOAD_PATH."/modules/system/language/".$this->_to_lang);
+					break;
+					case 'system/admin';
+						if(!is_dir(_IMTRANSLATING_UPLOAD_PATH."/modules/system/language/")){
+							mkdir(_IMTRANSLATING_UPLOAD_PATH."/modules/");
+							mkdir(_IMTRANSLATING_UPLOAD_PATH."/modules/system/");
+							mkdir(_IMTRANSLATING_UPLOAD_PATH."/modules/system/language/");
+							mkdir(_IMTRANSLATING_UPLOAD_PATH."/modules/system/language/".$this->_to_lang);
+						}
+						mkdir(_IMTRANSLATING_UPLOAD_PATH."/modules/system/language/".$this->_to_lang."/admin/");
+					break;
+				}
+			}else{
+
+			}
 		}
 		if($newfile = fopen($new_version_path.$filename, 'w')){
-			fwrite($newfile,  str_replace('?>', _AM_IMTRANSL_COMMENT , file_get_contents($old_version_path.$filename))."\r\n");
+			if(file_exists($old_version_path.$filename)){
+				fwrite($newfile,  str_replace('?>', _AM_IMTRANSL_COMMENT , file_get_contents($old_version_path.$filename))."\r\n");
+			}else{
+				fwrite($newfile, "<?\r\n"._AM_IMTRANSL_COMMENT ."\r\n");
+			}
 			foreach($_POST as $def => $value){
-				if($def != 'step' && $def != 'module' && $def != 'to_lang' && $def != 'from_lang'){
-					fwrite($newfile, 'define("'.$def.'", "'.str_replace(array('"', "'"), array('\"', "\'"), $value).'");'."\r\n");
+				if(!in_array($def, array('step', 'module', 'to_lang', 'from_lang', 'fileset', 'write')) && $value != ''){
+					fwrite($newfile, 'define("'.$def.'", "'.$myts->undoHtmlSpecialChars(utf8_decode($value)).'");'."\r\n");
+
 				}
 			}
 			fwrite($newfile,  '?>');

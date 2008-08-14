@@ -16,12 +16,12 @@ if(empty($_POST)){
 	$form->display();
 	exit;
 }else{
-	$job = new ImtranslatingJob($_POST['from_lang'], $_POST['to_lang'], $_POST['module'], $_POST['step']);
+	$job = new ImtranslatingJob($_POST['from_lang'], $_POST['to_lang'], $_POST['module'], $_POST['step'], $_POST['fileset']);
 	if($_POST['step'] == 'zip'){
 		$job->makeZip();
 		exit;
 	}else{
-		if($_POST['step'] != 0){
+		if($_POST['write'] == 1){
 			$job->write();
 		}
 		$form = $job->getForm();
