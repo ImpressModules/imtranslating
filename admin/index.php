@@ -6,15 +6,18 @@
 * Author: The SmartFactory <www.smartfactory.ca>
 * Licence: GNU
 */
+
 include_once("admin_header.php");
 xoops_cp_header();
 
-
 if(empty($_POST)){
+	$xoopsModule->displayAdminMenu(0, _AM_IMTRANSL_TRANSLATE);
+
+
 	$job = new ImtranslatingJob();
 	$form = $job->getInitialForm();
-	$form->display();
-	exit;
+	$form->assign($icmsAdminTpl);
+	$icmsAdminTpl->display('db:imtranslating_admin_index.html');
 }else{
 	$job = new ImtranslatingJob($_POST['from_lang'], $_POST['to_lang'], $_POST['module'], $_POST['step'], $_POST['fileset']);
 
