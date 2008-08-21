@@ -1,6 +1,5 @@
 <?php
 
-
 if (!defined("XOOPS_ROOT_PATH")) {
 die("XOOPS root path not defined");
 }
@@ -400,9 +399,9 @@ class ImtranslatingJob
 	}
 
 	private function getErrors($err_msg){
-		foreach($this->_error[] as $error){
-			echo "<h4>".$error."</h4>";
-		}
+		//foreach($this->_error[] as $error){
+			//echo "<h4>".$error."</h4>";
+		//}
 	}
 
 	function makeZip(){
@@ -415,7 +414,5 @@ class ImtranslatingJob
 	}
 
 }
-
-
 
 ?>
