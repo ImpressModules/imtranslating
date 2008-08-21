@@ -187,7 +187,7 @@ class ImtranslatingJob
 		$form = new XoopsThemeForm($translating_title, "translation_form", xoops_getenv('PHP_SELF'));
 
 		foreach($this->_missing_const as $const){
-			$form->addElement(new XoopsFormLabel(sprintf(_AM_IMTRANSL_ORIGINAL, ucfirst($this->_from_lang),$const), $this->_ref_lang_array[$const]));
+			$form->addElement(new XoopsFormLabel($const, $this->_ref_lang_array[$const]));
 			$form->addElement(new XoopsFormTextArea(_AM_IMTRANSL_TRANSLATION, $const));
 		}
 
@@ -268,10 +268,23 @@ class ImtranslatingJob
 				$line = substr($line, 1);
 				$line = substr(strrev($line), 1);
 				$line = substr($line, 1);
+
 				while(substr($line, 0, 1) == ' ' ){
 					$line = substr($line, 1);
 				}
-				$line = substr($line, 3);
+
+				// find the end of the definition (we know it's endig either with ' or ")
+				$end_of_def_found = false;
+				$i=0;
+				while (!$end_of_def_found && $i<strlen($line)) {
+					$char = substr($line, $i, 1);
+
+					if ($char == "'" || $char == '"') {
+						$end_of_def_found = true;
+					}
+					$i++;
+				}
+				$line = substr($line, $i);
 				$langfile_array[$const_name] = $myts->htmlSpecialChars(strrev($line));
 			}
 		}
@@ -289,37 +302,40 @@ class ImtranslatingJob
 	}
 
 	private function get_defined_const_names(){
-		$raw_langfile = file($this->_to_path.$this->_current_file);
-		foreach($raw_langfile as $key =>$line){
-			//erease spaces at the begining
-			while(substr($line, 0, 1) == ' '){
-				$line = substr($line, 1);
-			}
-			//look for 'define' instruction
-			if(substr($line, 0, 6) == 'define'){
-				//Isolate constant name
-				$line = substr($line, 6);
-				//erease spaces and parenthesis after 'define'
-				while(substr($line, 0, 1) == ' ' || substr($line, 0, 1) == '('){
-					$line = substr($line, 1);
-				}
-				if(substr($line, 0, 1) == '"'){
-					$const_name = substr($line, 1, stripos( substr($line, 1), '"'));
-					$line = substr($line, stripos( substr($line, 1), '"')+2);
-				}
-				if(substr($line, 0, 1) =="'"){
-					$const_name = substr($line, 1, stripos( substr($line, 1), "'"));
-					$line = substr($line, stripos( substr($line, 1), "'")+2);
-				}
-
-				//Isolate constant definition
-				//erease spaces and comma before constant value
-				while(substr($line, 0, 1) == ' ' || substr($line, 0, 1) == ','){
+		$const_array = array();
+		$raw_langfile_path = $this->_to_path.$this->_current_file;
+		if (file_exists($raw_langfile_path)) {
+			$raw_langfile = file($raw_langfile_path);
+			foreach($raw_langfile as $key =>$line){
+				//erease spaces at the begining
+				while(substr($line, 0, 1) == ' '){
 					$line = substr($line, 1);
 				}
 
+				//look for 'define' instruction
+				if(substr($line, 0, 6) == 'define'){
+					//Isolate constant name
+					$line = substr($line, 6);
+					//erease spaces and parenthesis after 'define'
+					while(substr($line, 0, 1) == ' ' || substr($line, 0, 1) == '('){
+						$line = substr($line, 1);
+					}
+					if(substr($line, 0, 1) == '"'){
+						$const_name = substr($line, 1, stripos( substr($line, 1), '"'));
+						$line = substr($line, stripos( substr($line, 1), '"')+2);
+					}
+					if(substr($line, 0, 1) =="'"){
+						$const_name = substr($line, 1, stripos( substr($line, 1), "'"));
+						$line = substr($line, stripos( substr($line, 1), "'")+2);
+					}
 
-				$const_array[] = $const_name;
+					//Isolate constant definition
+					//erease spaces and comma before constant value
+					while(substr($line, 0, 1) == ' ' || substr($line, 0, 1) == ','){
+						$line = substr($line, 1);
+					}
+					$const_array[] = $const_name;
+				}
 			}
 		}
 		return $const_array;
