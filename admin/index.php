@@ -13,12 +13,12 @@ xoops_cp_header();
 if(empty($_POST)){
 	$xoopsModule->displayAdminMenu(0, _AM_IMTRANSL_TRANSLATE);
 
-
 	$job = new ImtranslatingJob();
 	$form = $job->getInitialForm();
 	$form->assign($icmsAdminTpl);
 	$icmsAdminTpl->display('db:imtranslating_admin_index.html');
 }else{
+	$xoopsModule->displayAdminMenu(0, _AM_IMTRANSL_TRANSLATE);
 	$job = new ImtranslatingJob($_POST['from_lang'], $_POST['to_lang'], $_POST['module'], $_POST['step'], $_POST['fileset']);
 
 	if($_POST['step'] == 'zip'){
@@ -29,7 +29,8 @@ if(empty($_POST)){
 			$job->write();
 		}
 		$form = $job->getForm();
-		$form->display();
+		$form->assign($icmsAdminTpl);
+		$icmsAdminTpl->display('db:imtranslating_admin_index.html');
 	}
 }
 

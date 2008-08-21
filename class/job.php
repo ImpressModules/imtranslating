@@ -179,7 +179,12 @@ class ImtranslatingJob
 	}
 
 	private function getTranslationForm(){
-		$form = new XoopsThemeForm(sprintf(_AM_IMTRANSL_JOB, $this->_current_file), "translation_form", xoops_getenv('PHP_SELF'));
+		global $icmsAdminTpl;
+		$translating_title = sprintf(_AM_IMTRANSL_JOB, $this->_current_file);
+		$translating_info = sprintf(_AM_IMTRANSL_JOB_INFO, $this->_current_file);
+		$icmsAdminTpl->assign('translating_info', $translating_info);
+		$icmsAdminTpl->assign('translating_title', $translating_title);
+		$form = new XoopsThemeForm($translating_title, "translation_form", xoops_getenv('PHP_SELF'));
 
 		foreach($this->_missing_const as $const){
 			$form->addElement(new XoopsFormLabel(sprintf(_AM_IMTRANSL_ORIGINAL, ucfirst($this->_from_lang),$const), $this->_ref_lang_array[$const]));

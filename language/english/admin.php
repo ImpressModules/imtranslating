@@ -23,6 +23,7 @@ define("_AM_IMTRANSL_GO", "Continue");
 define("_AM_IMTRANSL_CANCEL", "Cancel");
 define("_AM_IMTRANSL_ORIGINAL", "%s definition for %s");
 define("_AM_IMTRANSL_JOB", "Missing constant in %s");
+define("_AM_IMTRANSL_JOB_INFO", "Please complete the following form in order to update the language constants of %s.");
 define("_AM_IMTRANSL_TRANSLATION", "Translation");
 define("_AM_IMTRANSL_COMMENT", "//New constants created via IMtranslating");
 define("_AM_IMTRANSL_ZIP", "Zip and download");
