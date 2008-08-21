@@ -13,36 +13,28 @@
 $i = -1;
 
 $i++;
-$adminmenu[$i]['title'] = _MI_IMTRANSLATING_LOGS;
-$adminmenu[$i]['link'] = "admin/log.php";
-
-$i++;
-$adminmenu[$i]['title'] = _MI_IMTRANSLATING_TYPES;
-$adminmenu[$i]['link'] = "admin/type.php";
-
-$i++;
-$adminmenu[$i]['title'] = _MI_IMTRANSLATING_CATEGORIES;
-$adminmenu[$i]['link'] = "admin/category.php";
+$adminmenu[$i]['title'] = _MI_IMTRANSLATING_TRANSLATE;
+$adminmenu[$i]['link'] = "admin/index.php";
 
 global $xoopsModule;
 if (isset($xoopsModule)) {
 
 	$i = -1;
 
-	$i++;
+/*	$i++;
 	$headermenu[$i]['title'] = _PREFERENCES;
 	$headermenu[$i]['link'] = '../../system/admin.php?fct=preferences&amp;op=showmod&amp;mod=' . $xoopsModule->getVar('mid');
 
 	$i++;
 	$headermenu[$i]['title'] = _CO_ICMS_GOTOMODULE;
 	$headermenu[$i]['link'] = IMTRANSLATING_URL;
-
+*/
 	$i++;
 	$headermenu[$i]['title'] = _CO_ICMS_UPDATE_MODULE;
 	$headermenu[$i]['link'] = XOOPS_URL . "/modules/system/admin.php?fct=modulesadmin&op=update&module=" . $xoopsModule->getVar('dirname');
 
 	$i++;
-	$headermenu[$i]['title'] = _AM_ICMS_ABOUT;
+	$headermenu[$i]['title'] = _MODABOUT_ABOUT;
 	$headermenu[$i]['link'] = IMTRANSLATING_URL . "admin/about.php";
 }
 ?>

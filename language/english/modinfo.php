@@ -1,31 +1,23 @@
 <?php
-
 /**
-* $Id: modinfo.php 1394 2008-05-22 16:21:43Z marcan $
-* Module: Imtranslating
-* Author: The SmartFactory <www.smartfactory.ca>
-* Licence: GNU
+* modinfo language constants
+*
+* @copyright	http://smartfactory.ca The SmartFactory
+* @license		http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU General Public License (GPL)
+* @since		1.0
+* @author		http://inboxinternational.com INBOX International inc.
+* @version		$Id$
 */
 
-/**  not edited by RJB on 3/10/07 */
 
-if (!defined("XOOPS_ROOT_PATH")) {
- 	die("XOOPS root path not defined");
-}
+if (!defined("ICMS_ROOT_PATH")) die("ICMS root path not defined");
 
 // Module Info
 // The name of this module
 
 global $xoopsModule;
 define("_MI_IMTRANSLATING_MD_NAME", "imTranslating");
-define("_MI_IMTRANSLATING_MD_DESC", "ImpressCMS Events Log Manager");
+define("_MI_IMTRANSLATING_MD_DESC", "Translation management mdoule for ImpressCMS");
 
-define("_MI_IMTRANSLATING_LOGS", "Logs");
-define("_MI_IMTRANSLATING_TYPES", "Types");
-define("_MI_IMTRANSLATING_CATEGORIES", "Categories");
-
-define("_MI_IMTRANSLATING_TEAM_GR", "Team groups");
-define("_MI_IMTRANSLATING_TEAM_GRDSC", "These groups will be considered as the users in your team. These groups will have permissions to create, edit and delete lists and items on the user side.");
-
-
+define("_MI_IMTRANSLATING_TRANSLATE", "Translate");
 ?>

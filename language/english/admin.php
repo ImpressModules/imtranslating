@@ -1,20 +1,19 @@
 <?php
 /**
-* English language constants used in admin section of the module
+* admin side language constants
 *
-* @copyright	The SmartFactory http://www.smartfactory.ca
+* @copyright	http://smartfactory.ca The SmartFactory
 * @license		http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU General Public License (GPL)
 * @since		1.0
-* @package		Imtranslating
-* @author		marcan <marcan@smartfactory.ca>
-* @version		$Id: admin.php 1394 2008-05-22 16:21:43Z marcan $
+* @author		http://inboxinternational.com INBOX International inc.
+* @version		$Id$
 */
 
-if (!defined("XOOPS_ROOT_PATH")) {
- 	die("XOOPS root path not defined");
-}
+if (!defined("ICMS_ROOT_PATH")) die("ICMS root path not defined");
 
-
+define("_AM_IMTRANSL_START_FORM", "Start translating!");
+define("_AM_IMTRANSL_START_FORM_DSC", "Fill out the following form in order to start translating.");
+define("_AM_IMTRANSL_TRANSLATE", "Translate");
 define("_AM_IMTRANSL_FROM_LANG", "Reference language");
 define("_AM_IMTRANSL_TO_LANG", "Language of the translation");
 define("_AM_IMTRANSL_MODULE", "Module");
