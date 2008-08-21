@@ -25,7 +25,7 @@ if(empty($_POST)){
 		$job->makeZip();
 		exit;
 	}else{
-		if($_POST['write'] == 1){
+		if(isset($_POST['write']) && $_POST['write'] == 1){
 			$job->write();
 		}
 		$form = $job->getForm();

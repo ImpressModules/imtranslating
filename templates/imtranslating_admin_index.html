@@ -2,8 +2,12 @@
 	<h1><{$smarty.const._AM_IMTRANSL_START_FORM}></h1>
 	<p><{$smarty.const._AM_IMTRANSL_START_FORM_DSC}></p>
 	<{includeq file='db:system_default_form.html' form=$job_form}>
-<{else}>
+<{elseif $translation_form}>
 	<h1><{$translating_title}></h1>
 	<p><{$translating_info}></p>
 	<{includeq file='db:system_default_form.html' form=$translation_form}>
+<{elseif $finish_form}>
+	<h1><{$smarty.const._AM_IMTRANSL_FINISH_FORM}></h1>
+	<p><{$smarty.const._AM_IMTRANSL_FINISH_FORM_DSC}></p>
+	<{includeq file='db:system_default_form.html' form=$finish_form}>
 <{/if}>
