@@ -13,13 +13,13 @@
 
 if (!defined("ICMS_ROOT_PATH")) die("Caminho Raiz do ImpressCMS não está definido");
 
-define("_AM_IMTRANSL_START_FORM", "Start translating!");
-define("_AM_IMTRANSL_START_FORM_DSC", "Fill out the following form in order to start translating.");
-define("_AM_IMTRANSL_TRANSLATE", "Translate");
-define("_AM_IMTRANSL_FINISH_FORM", "You are done !");
-define("_AM_IMTRANSL_FINISH_FORM_DSC", "Congratulations, you have completed the translation. Please note that imTranslating has created the language files structure under yoursite/uploads/imtranslating/. You can download the files directly from there. Alternatively you can also click on the Zip and Download button below to download an archive version of the new language pack.");
+define("_AM_IMTRANSL_START_FORM", "Iniciar a tradução!");
+define("_AM_IMTRANSL_START_FORM_DSC", "Preencha o formulário a seguir para começar a tradução.");
+define("_AM_IMTRANSL_TRANSLATE", "Traduzir");
+define("_AM_IMTRANSL_FINISH_FORM", "Você terminou !");
+define("_AM_IMTRANSL_FINISH_FORM_DSC", "Parabéns, você completou a tradução. Por favor note que imTranslating criou a estrutura dos arquivos de linguagem sob o seusite/uploads/imtranslating/. Você pode baixar os arquivos diretamente de lá. Alternativamente, você também pode clicar no botão Download Zip para baixar um arquivo com a nova versão do pacote de idioma que acabou de criar.");
 define("_AM_IMTRANSL_FROM_LANG", "Idioma de Referência");
-define("_AM_IMTRANSL_TO_LANG", "Língua da tradução");
+define("_AM_IMTRANSL_TO_LANG", "Língua de tradução");
 define("_AM_IMTRANSL_MODULE", "Módulo");
 define("_AM_IMTRANSL_COREFILES", "Arquivos Core/Núcleo");
 define("_AM_IMTRANSL_INSTALLFILES", "Arquivos de Instalação");
@@ -27,7 +27,7 @@ define("_AM_IMTRANSL_GO", "Continua");
 define("_AM_IMTRANSL_CANCEL", "Cancelar");
 define("_AM_IMTRANSL_ORIGINAL", "%s definição para %s");
 define("_AM_IMTRANSL_JOB", "Constante Ausente em %s");
-define("_AM_IMTRANSL_JOB_INFO", "Please complete the following form in order to update the language constants of %s.");
+define("_AM_IMTRANSL_JOB_INFO", "Por favor, preencha o formulário seguinte, para atualizar as constantes do idioma proposto em %s.");
 define("_AM_IMTRANSL_TRANSLATION", "Tradução");
 define("_AM_IMTRANSL_COMMENT", "//Nova constante criada através do IMtranslating");
 define("_AM_IMTRANSL_ZIP", "Zip/Compactar e download");

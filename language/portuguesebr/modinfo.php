@@ -19,5 +19,5 @@ global $xoopsModule;
 define("_MI_IMTRANSLATING_MD_NAME", "imTranslating");
 define("_MI_IMTRANSLATING_MD_DESC", "Gerenciador de registro e Eventos do ImpressCMS ");
 
-define("_MI_IMTRANSLATING_TRANSLATE", "Translate");
+define("_MI_IMTRANSLATING_TRANSLATE", "Traduzir");
 ?>
