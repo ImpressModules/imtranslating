@@ -41,7 +41,7 @@ include "../../../mainfile.php";
 // include "../../mainfile.php"; GIJ
 include XOOPS_ROOT_PATH."/include/cp_functions.php";
 
-include_once XOOPS_ROOT_PATH."/class/xoopsmodule.php";
+require_once XOOPS_ROOT_PATH.'/kernel/module.php';
 include_once "../include/gtickets.php" ;// GIJ
 
 $admintest = 0;
